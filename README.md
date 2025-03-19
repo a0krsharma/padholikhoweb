@@ -2,6 +2,13 @@
 
 A comprehensive education platform connecting students, teachers, and parents.
 
+## Important Note
+
+When running commands for this project, always make sure you're in the correct directory:
+```
+cd "C:\Users\Acer\Desktop\Padho_Likho App\PadhoLikhoApp"
+```
+
 ## Features
 
 - **User Roles**: Student, Teacher, and Parent interfaces
