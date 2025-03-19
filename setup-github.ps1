@@ -2,7 +2,7 @@
 # Run this script after creating your repository on GitHub
 
 # Set the GitHub repository URL (replace with your own)
-$repoUrl = "https://github.com/your-username/padholikhoweb.git"
+$repoUrl = "https://github.com/a0krsharma/padholikhoweb.git"
 
 # Initialize Git repository if not already initialized
 if (!(Test-Path -Path ".git")) {
