@@ -8,7 +8,9 @@ import {
   UserCredential,
   User,
   initializeAuth,
-  getReactNativePersistence
+  getReactNativePersistence,
+  browserLocalPersistence,
+  indexedDBLocalPersistence
 } from 'firebase/auth';
 import { 
   getFirestore, 
@@ -23,6 +25,7 @@ import {
 } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from 'react-native';
 
 // Your Firebase configuration
 const firebaseConfig = {
@@ -38,10 +41,27 @@ const firebaseConfig = {
 // Initialize Firebase
 export const firebaseApp = initializeApp(firebaseConfig);
 
-// Initialize Auth with AsyncStorage persistence
-export const auth = initializeAuth(firebaseApp, {
-  persistence: getReactNativePersistence(ReactNativeAsyncStorage)
-});
+// Initialize Auth with appropriate persistence based on platform
+export let auth;
+
+// Check if we're running in a web environment
+const isWeb = typeof document !== 'undefined';
+
+if (isWeb) {
+  // Use standard getAuth for web environments
+  auth = getAuth(firebaseApp);
+} else {
+  // Use initializeAuth with AsyncStorage persistence for React Native
+  try {
+    auth = initializeAuth(firebaseApp, {
+      persistence: getReactNativePersistence(ReactNativeAsyncStorage)
+    });
+  } catch (error) {
+    // Fallback to standard auth if there's an error
+    console.warn('Falling back to standard auth:', error);
+    auth = getAuth(firebaseApp);
+  }
+}
 
 export const firestore = getFirestore(firebaseApp);
 export const db = firestore; // Alias for consistency
